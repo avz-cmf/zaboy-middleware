@@ -1,10 +1,31 @@
 {
-    "name": "zaboy-res",
+  "name": "avz-cmf/zaboy-middleware",
+  "description": "REST resource as middleware",
+  "type": "library",
+  "license": "GPL-3.0",
+  "keywords": [
+    "php",
+    "rest",
+    "data store",
+    "middleware"
+  ],
+  
+  "homepage": "https://github.com/avz-cmf/zaboy-middleware",
+  
+  "support": {
+    "issues": "https://github.com/avz-cmf/zaboy-middleware/issues",
+    "source": "https://github.com/avz-cmf/zaboy-middleware"
+  },
 
     "require": {
-        "zendframework/zend-db": "^2.6"
-        
-    },
+        "avz-cmf/zaboy-res": "^1.0.3",
+        "zendframework/zend-stratigility": "^1.1",
+	"psr/http-message": "^1.0",
+        "zendframework/zend-diactoros": "^1.1",
+        "zendframework/zend-config": "^2.5",
+        "zendframework/zend-servicemanager": "^2.5",
+        "zendframework/zend-stdlib": "^2.5"
+     },
     "require-dev": {
         "phpunit/phpunit": "^4.0"
     },

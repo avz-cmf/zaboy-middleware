@@ -6,10 +6,12 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace zaboy\res\Middleware;
+namespace zaboy\middleware\Middlewares;
 
+use zaboy\res\DataStores\DataStoresAbstract;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Stratigility\MiddlewareInterface;
 
 /**
  * Send DataStores data as HTML
@@ -18,12 +20,18 @@ use Psr\Http\Message\ServerRequestInterface;
  * @category   DataStores
  * @package    DataStores
  */
-class GetById
+abstract class StoreMiddlewareAbstract implements MiddlewareInterface
 {
-    
-    public function __construct()
-    {
+    /**
+     *
+     * @var DataStoresInterface 
+     */
+    protected $dataStore;
 
+
+    public function __construct(DataStoresAbstract $dataStore)
+    {
+        $this->dataStore = $dataStore;
     }
     
     /**
@@ -32,28 +40,5 @@ class GetById
      * @param callable|null $next
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
-    {
-        if ($request->getMethod() !== 'GET') {
-            if ($next) {
-                return $next($request, $response);
-            }
-            return $response;
-        } 
-        
-        $id = 666;//$request->getAttribute('id');
-
-        
-        //$request = $request->withAttribute('session', $this->session);
-        
-        $response->write( 'd<br>' . get_class($GetById) . '<br>d');
-        
-        /**
-        if ($next) {
-            return $next($request, $response);
-        }
-         */
-         
-        return $response;
-    }
+    abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null);
 }

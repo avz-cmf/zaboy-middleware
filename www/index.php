@@ -5,15 +5,13 @@ chdir(dirname(__DIR__));
 // Setup autoloading
 require '/vendor/autoload.php';
 
-use zaboy\res\Middleware\GetById;
 use Zend\Stratigility\MiddlewarePipe;
 use Zend\Diactoros\Server;
 
 $container = include 'config/container.php';
 
 $app    = new MiddlewarePipe();
-$GetById = new GetById();
-$app->pipe('/', $GetById); 
+$app->pipe('/', $container->get('StoreMwGetAll')); 
 
 $server = Server::createServer($app,
   $_SERVER,

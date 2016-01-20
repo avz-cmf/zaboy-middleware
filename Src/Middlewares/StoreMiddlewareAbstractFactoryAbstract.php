@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace zaboy\res\Middleware\Factory;
+namespace zaboy\middleware\Middlewares;
 
 use Zend\Stratigility\MiddlewareInterface;
 use Interop\Container\ContainerInterface;
@@ -18,12 +18,21 @@ use Interop\Container\ContainerInterface;
  * @category   DataStores
  * @package    DataStores
  */
-class StoreMiddlewareAbstractFactory
+class StoreMiddlewareAbstractFactoryAbstract
 {
+    
     /**
-     * @var array|null
+     * Can the factory create an instance for the service?
+     *
+     * @param  Interop\Container\ContainerInterface $container
+     * @param  string $requestedName
+     * @return bool
      */
-    protected  $config;
+    public function canCreate(ContainerInterface $container, $requestedName) 
+    {
+        $config = $container->get('config');
+        return isset ($config['storeMiddleware'][$requestedName]['class']);
+    }
 
     /**
      * Create and return an instance of the Middleware.
@@ -48,7 +57,7 @@ class StoreMiddlewareAbstractFactory
                     . ' for Middleware ' . $requestedName); 
         }
         $dataStore =  $container->get($dataStoreServiceName);
-        return new $dataStoreServiceName($dataStore);
+        return new $requestedClassName($dataStore);
     }    
 
 }    

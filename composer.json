@@ -31,7 +31,7 @@
     },
     "autoload": {
       "psr-4": {
-        "zaboy\\res\\": "src/"
+        "zaboy\\middleware\\": "src/"
       }
     },
     "autoload-dev": {

@@ -6,11 +6,11 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace zaboy\res\Middleware;
+namespace zaboy\middleware\Middleware;
 
+use zaboy\middleware\Middlewares\StoreMiddlewareAbstract;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Stratigility\MiddlewareInterface;
 
 /**
  * Send DataStores data as HTML
@@ -19,19 +19,8 @@ use Zend\Stratigility\MiddlewareInterface;
  * @category   DataStores
  * @package    DataStores
  */
-abstract class StoreMiddlewareAbstract implements MiddlewareInterface
+class StoreMwGetAll extends StoreMiddlewareAbstract
 {
-    /**
-     *
-     * @var DataStoresInterface 
-     */
-    protected $dataStore;
-
-
-    public function __construct(DataStoresInterface $dataStore)
-    {
-        $this->dataStore = $dataStore;
-    }
     
     /**
      * @param ServerRequestInterface $request
@@ -39,5 +28,21 @@ abstract class StoreMiddlewareAbstract implements MiddlewareInterface
      * @param callable|null $next
      * @return ResponseInterface
      */
-    abstract public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null);
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    {
+        if ($request->getMethod() !== 'GET') {
+            if ($next) {
+                return $next($request, $response);
+            }
+            return $response;
+        } 
+
+        $rowset = $this->dataStore->find();
+        foreach ($rowset as $row) {
+            foreach ($row as $fildName => $fildValue) {
+                $response->write($fildName . ' = ' . $fildValue . '<br>' . PHP_EOL);
+            }
+        }
+        return $response;
+    }
 }

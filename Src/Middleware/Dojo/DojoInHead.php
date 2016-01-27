@@ -44,8 +44,10 @@ class DojoInHead
 DOJO_HEAD
         );    
         
-        $next($request, $response);
+        if ($next) {
+            return $next($request, $response);
+        }
 
-        return $response;         
+        return $response;      
     }
 }

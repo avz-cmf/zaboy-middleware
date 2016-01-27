@@ -33,7 +33,9 @@ class Html
     {
         $response->write('<!DOCTYPE HTML>' . PHP_EOL);
         $response->write('<html>' . PHP_EOL);
-        $next($request, $response);
+        if ($next) {
+            $response = $next($request, $response);
+        }    
         $response->write('</html>' . PHP_EOL);
         return $response;        
     }

@@ -36,7 +36,9 @@ class Head
         $response->write('    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . PHP_EOL);    
         $next($request, $response);    
         $response->write(PHP_EOL . '</head>' . PHP_EOL);           
-        $next($request, $response);  
-        return $response;        
+        if ($next) {
+            return $next($request, $response);
+        }
+        return $response;       
     }
 }

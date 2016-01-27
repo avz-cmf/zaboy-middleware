@@ -20,7 +20,6 @@ use Xiag\Rql\Parser\TokenParser\LimitTokenParser;
 use Xiag\Rql\Parser\TokenParser\SortTokenParser;
 use Xiag\Rql\Parser\TokenParser\Query\Fiql;
 
-
 /**
  * Send DataStores data as HTML
  *                                                this._targetContainsQueryString = this.target.lastIndexOf('?') >= 0;
@@ -31,6 +30,48 @@ use Xiag\Rql\Parser\TokenParser\Query\Fiql;
 class RqlParse
 {
     /**
+     *
+     * @var Xiag\Rql\Parser\TokenParserGroup; 
+     */
+    protected $queryTokenParser;    
+
+    /**
+     *
+     * @var Xiag\Rql\Parser\Lexer 
+     */    
+    protected $lexer;
+
+    /**
+     *
+     * @var Xiag\Rql\Parser\ExpressionParser; 
+     */
+    protected $parser;
+
+    
+    public function __construct()
+    {
+        $this->lexer = new Lexer();
+
+        $this->queryTokenParser = new TokenParserGroup();
+        $this->queryTokenParser
+            ->addTokenParser(new GroupTokenParser($this->queryTokenParser))
+            ->addTokenParser(new Fiql\ArrayOperator\InTokenParser())
+            ->addTokenParser(new Fiql\ArrayOperator\OutTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\EqTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\NeTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\LtTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\GtTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\LeTokenParser())
+            ->addTokenParser(new Fiql\ScalarOperator\GeTokenParser())
+            ->addTokenParser(new LimitTokenParser())
+            ->addTokenParser(new SortTokenParser())        
+            ->addTokenParser(new SelectTokenParser());       
+        
+        $this->parser = new Parser(new ExpressionParser());        
+        $this->parser->addTokenParser($this->queryTokenParser);
+    }
+ 
+    /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param callable|null $next
@@ -38,42 +79,17 @@ class RqlParse
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
- 
-        $next($request, $response);
-        $response->write(PHP_EOL . $request->getAttributes() . '</br>' . PHP_EOL);
-        
-        $lexer = new Lexer();
-        $query = $request->getUri()->getQuery();
-        $tokens = $lexer->tokenize($query);
-        
-        //$parser = Parser::createDefault();
-        //file_put_contents('xxxx', print_r($parser->parse($tokens), true));
-
-        $response->write('    <h2> RQL test</h2>' . PHP_EOL);              
-$queryTokenParser = new TokenParserGroup();
-$queryTokenParser
-    ->addTokenParser(new GroupTokenParser($queryTokenParser))
-    ->addTokenParser(new Fiql\ArrayOperator\InTokenParser())
-    ->addTokenParser(new Fiql\ArrayOperator\OutTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\EqTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\NeTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\LtTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\GtTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\LeTokenParser())
-    ->addTokenParser(new Fiql\ScalarOperator\GeTokenParser())
-    ->addTokenParser(new LimitTokenParser())
-    ->addTokenParser(new SortTokenParser())        
-    ->addTokenParser(new SelectTokenParser());
-
-$parser = new Parser(new ExpressionParser());
-$parser->addTokenParser($queryTokenParser);
-    
-    $rql = $parser->parse($tokens);
-        
-        
-        $response->write(PHP_EOL . var_dump($rql) . '</br>' . PHP_EOL);
-        
-        //$sort = $rql->getSort();
-        return $response;        
+        $rqlQueryString = $request->getUri()->getQuery(); 
+        /* @var $rqlQueryObject \Xiag\Rql\Parser\Query */
+        $tokens = $this->lexer->tokenize($rqlQueryString);
+        /* @var $rqlQueryObject \Xiag\Rql\Parser\Query */
+        $rqlQueryObject = $this->parser->parse($tokens);
+        $request = $request->withAttribute('rqlQueryObject', $rqlQueryObject);
+        //$response->write(var_dump($rqlQueryObject));
+        if ($next) {
+            return $next($request, $response);
+        }
+        return $response;
     }
+
 }

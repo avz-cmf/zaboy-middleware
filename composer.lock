@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d10e115285b1a1b594299548f19c1c97",
-    "content-hash": "5bb428d1cba86b8878224e517638c863",
+    "hash": "78d67f3e8902a43245619ae1beeef044",
+    "content-hash": "baa71e2e9001eeb8a1358b1a69438806",
     "packages": [
         {
             "name": "avz-cmf/zaboy-res",
@@ -125,6 +125,49 @@
                 "response"
             ],
             "time": "2015-05-04 20:22:00"
+        },
+        {
+            "name": "xiag/rql-parser",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xiag-ag/rql-parser.git",
+                "reference": "92e8245ea52b170998d6b3be538de20d4cddd2a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xiag-ag/rql-parser/zipball/92e8245ea52b170998d6b3be538de20d4cddd2a3",
+                "reference": "92e8245ea52b170998d6b3be538de20d4cddd2a3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "xiag/rql-command": "Console commands to visualize your RQL code"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Xiag\\Rql\\Parser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "keywords": [
+                "language",
+                "parser",
+                "query",
+                "resource",
+                "rest",
+                "rql"
+            ],
+            "time": "2015-08-21 11:19:07"
         },
         {
             "name": "zendframework/zend-config",

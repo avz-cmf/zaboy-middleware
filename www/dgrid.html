@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Hello dgrid!</title>
+    <script 
+        src='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js' 
+        data-dojo-config="async: true, parseOnLoad: true">
+    </script>
+
+    <script>
+        require({
+            packages: [{
+                name: 'dgrid',
+                location: '//cdn.rawgit.com/SitePen/dgrid/v0.3.15'
+            }, {
+                name: 'xstyle',
+                location:'//cdn.rawgit.com/kriszyp/xstyle/v0.2.1'
+            }, {
+                name: 'put-selector',
+                location: '//cdn.rawgit.com/kriszyp/put-selector/v0.3.5'
+            }]
+            },[
+                'dgrid/Grid',
+                'dojo/domReady!'
+            ], function (Grid) {
+
+            var data = [
+                { first: 'Bob', last: 'Barker', age: 89 },
+                { first: 'Vanna', last: 'White', age: 55 },
+                { first: 'Pat', last: 'Sajak', age: 65 }
+            ];
+
+            var grid = new Grid({
+                columns: {
+                    first: 'First Name',
+                    last: 'Last Name',
+                    age: 'Age'
+                }
+            }, 'grid');
+
+            grid.renderArray(data);
+        });
+    </script>
+</head>
+<body>
+    <div id="grid"></div>
+</body>
+</html>

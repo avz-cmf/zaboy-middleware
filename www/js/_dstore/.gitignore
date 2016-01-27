@@ -1,0 +1,7 @@
+.baseDir.ts
+.sublimets
+.tscache
+_build
+dist
+html-report
+node_modules

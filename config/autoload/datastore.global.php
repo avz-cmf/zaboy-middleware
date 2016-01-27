@@ -2,9 +2,9 @@
 
 return [ 
     'dataStore' => [
-        'resDbTable' => [
+        'allType' => [
             'class' =>'zaboy\res\DataStore\DbTable',
-            'tableName' => 'test_zav_res'
+            'tableName' => 'all_type'
         ]    
     ]        
 ];

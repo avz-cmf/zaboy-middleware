@@ -8,8 +8,12 @@
 
 namespace zaboy\middleware\Middleware\Rest;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Stratigility\MiddlewareInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
-class ResponseEncoder
+class ResponseEncoder implements MiddlewareInterface
 {
     
     /**
@@ -21,7 +25,7 @@ class ResponseEncoder
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
         $rowset = $request->getAttribute('Response-Body');
-        $status = $response->getStatus('Status');
+        $status = $response->getStatusCode();
         $headers = $response->getHeaders();
         $response = new JsonResponse($rowset, $status, $headers);
         if ($next) {

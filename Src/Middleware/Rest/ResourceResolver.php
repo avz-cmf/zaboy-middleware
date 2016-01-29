@@ -6,11 +6,11 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace zaboy\middleware\Middleware;
+namespace zaboy\middleware\Middleware\Rest;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
+use Zend\Stratigility\MiddlewareInterface;
 /**
  * 
  * @category   DataStores
@@ -28,7 +28,7 @@ class ResourceResolver implements MiddlewareInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
-        $path = $request->getUri()->getPath();
+        $path = ltrim($request->getUri()->getPath(), '/');
         $resourceName = explode ('/', $path)[0];
         $request = $request->withAttribute('Resource-Name', $resourceName);
         

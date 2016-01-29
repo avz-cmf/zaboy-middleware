@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78d67f3e8902a43245619ae1beeef044",
+    "hash": "6d0c3a0da861192722405bcab107764c",
     "content-hash": "baa71e2e9001eeb8a1358b1a69438806",
     "packages": [
         {
             "name": "avz-cmf/zaboy-res",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avz-cmf/zaboy-res.git",
-                "reference": "de5fe20d2687e8de89acc2aa5a2f9185240b593d"
+                "reference": "59daeb9d984dcf9c300b73819b4b67d1934c850f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avz-cmf/zaboy-res/zipball/de5fe20d2687e8de89acc2aa5a2f9185240b593d",
-                "reference": "de5fe20d2687e8de89acc2aa5a2f9185240b593d",
+                "url": "https://api.github.com/repos/avz-cmf/zaboy-res/zipball/59daeb9d984dcf9c300b73819b4b67d1934c850f",
+                "reference": "59daeb9d984dcf9c300b73819b4b67d1934c850f",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
                 "resource",
                 "rest"
             ],
-            "time": "2016-01-20 21:26:38"
+            "time": "2016-01-27 19:12:28"
         },
         {
             "name": "container-interop/container-interop",

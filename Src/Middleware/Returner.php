@@ -8,7 +8,6 @@
 
 namespace zaboy\middleware\Middleware;
 
-use zaboy\middleware\Middlewares\StoreMiddlewareAbstract;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

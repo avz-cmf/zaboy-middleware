@@ -31,6 +31,7 @@ class StoreMiddleware extends StoreMiddlewareAbstract
         switch ($request->getMethod()) {
             case 'GET':
                 $rowset = $this->dataStore->find();
+                $request = withAttribute('Response-Body', $rowset);
                 $contentRangeHeader = 'items 0-' . $this->dataStore->count()-1 . '/' . $this->dataStore->count();
                 $response = $response->withHeader('Content-Range', $contentRangeHeader);
                 $response = $response->withStatus(200);    

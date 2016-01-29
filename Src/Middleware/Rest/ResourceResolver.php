@@ -28,9 +28,14 @@ class ResourceResolver implements MiddlewareInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
-        $path = ltrim($request->getUri()->getPath(), '/');
-        $resourceName = explode ('/', $path)[0];
+        $path = $request->getUri()->getPath();        
+        preg_match("/^[\/]?([-_A-Za-z0-9]+)/",$path,$matches);
+        $resourceName = $matches[1];
+        preg_match("/^[\/]?([-_A-Za-z0-9]+)[\/]([-_A-Za-z0-9]+)/",$path,$matches);
+        $id = isset($matches[2])?$matches[2]:null;
+
         $request = $request->withAttribute('Resource-Name', $resourceName);
+        $request = $request->withAttribute('id', $id);
         
         if ($next) {
             return $next($request, $response);

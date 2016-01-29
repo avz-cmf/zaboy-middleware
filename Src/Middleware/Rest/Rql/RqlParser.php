@@ -19,6 +19,7 @@ use Xiag\Rql\Parser\TokenParser\SelectTokenParser;
 use Xiag\Rql\Parser\TokenParser\LimitTokenParser;
 use Xiag\Rql\Parser\TokenParser\SortTokenParser;
 use Xiag\Rql\Parser\TokenParser\Query\Fiql;
+use Zend\Stratigility\MiddlewareInterface;
 
 /**
  * Send DataStores data as HTML
@@ -27,7 +28,7 @@ use Xiag\Rql\Parser\TokenParser\Query\Fiql;
  * @category   DataStores
  * @package    DataStores
  */
-class RqlParser
+class RqlParser implements MiddlewareInterface
 {
     /**
      *
@@ -85,7 +86,7 @@ class RqlParser
         $tokens = $this->lexer->tokenize($rqlQueryString);
         /* @var $rqlQueryObject \Xiag\Rql\Parser\Query */
         $rqlQueryObject = $this->parser->parse($tokens);
-        $request = $request->withAttribute('rqlQueryObject', $rqlQueryObject);
+        $request = $request->withAttribute('Rql-Query-Object', $rqlQueryObject);
         //$response->write(var_dump($rqlQueryObject));
         if ($next) {
             return $next($request, $response);

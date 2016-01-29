@@ -38,7 +38,6 @@ class ResourceResolverTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->object = new ResourceResolver();
         $this->response = new Response();
-        $this->request = new ServerRequest([], [], '/foo');
         $this->next = function (ServerRequest $req, Response $resp) {
             return $req;
         };
@@ -53,14 +52,72 @@ class ResourceResolverTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testReturner__invoke() {
+        $this->request = new ServerRequest([], [], '/foo');        
         $returned = $this->object
                 ->__invoke($this->request, $this->response, $this->next);        
         $this->assertSame(
                 $returned->getAttribute('Resource-Name'),
                 'foo'
         );
-    }
-    
-    
+        $this->assertSame(
+                $returned->getAttribute('id'),
+                null
+        );
+        $this->request = new ServerRequest([], [], '/foo?a=3');        
+        $returned = $this->object
+                ->__invoke($this->request, $this->response, $this->next);        
+        $this->assertSame(
+                $returned->getAttribute('Resource-Name'),
+                'foo'
+        );
+        $this->assertSame(
+                $returned->getAttribute('id'),
+                null
+        );
+        $this->request = new ServerRequest([], [], 'foo/');        
+        $returned = $this->object
+                ->__invoke($this->request, $this->response, $this->next);        
+        $this->assertSame(
+                $returned->getAttribute('Resource-Name'),
+                'foo'
+        );
+        $this->assertSame(
+                $returned->getAttribute('id'),
+                null
+        );
+        $this->request = new ServerRequest([], [], '/foo/1662');        
+        $returned = $this->object
+                ->__invoke($this->request, $this->response, $this->next);        
+        $this->assertSame(
+                $returned->getAttribute('Resource-Name'),
+                'foo'
+        );
+        $this->assertSame(
+                $returned->getAttribute('id'),
+                '1662'
+        );
+        $this->request = new ServerRequest([], [], '/foo/1t3?F=r');        
+        $returned = $this->object
+                ->__invoke($this->request, $this->response, $this->next);        
+        $this->assertSame(
+                $returned->getAttribute('Resource-Name'),
+                'foo'
+        );
+        $this->assertSame(
+                $returned->getAttribute('id'),
+                '1t3'
+        );
 
-}
+        $this->request = new ServerRequest([], [], 'foo/d_f-g1?');        
+        $returned = $this->object
+                ->__invoke($this->request, $this->response, $this->next);        
+        $this->assertSame(
+                $returned->getAttribute('Resource-Name'),
+                'foo'
+        );
+         $this->assertSame(
+                $returned->getAttribute('id'),
+                'd_f-g1'
+        );
+    }  
+} 

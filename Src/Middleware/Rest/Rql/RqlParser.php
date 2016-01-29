@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace zaboy\middleware\Middleware\Rql;
+namespace zaboy\middleware\Middleware\Rest\Rql;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,7 +27,7 @@ use Xiag\Rql\Parser\TokenParser\Query\Fiql;
  * @category   DataStores
  * @package    DataStores
  */
-class RqlParse
+class RqlParser
 {
     /**
      *
@@ -72,6 +72,7 @@ class RqlParse
     }
  
     /**
+     * 
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param callable|null $next
@@ -89,6 +90,11 @@ class RqlParse
         if ($next) {
             return $next($request, $response);
         }
+/**        
+if($key = 'select-param') {
+//'select-param': 'prop1,prop2'
+$fildsArray = explode(',', urldecode($value)); 
+ */     
         return $response;
     }
 

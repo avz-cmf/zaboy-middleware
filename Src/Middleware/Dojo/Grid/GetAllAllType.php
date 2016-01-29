@@ -33,44 +33,19 @@ class GetAllAllType
     {
         $response->write(
 <<<DOJO_GRID
-       
     <script>
         require([
-                'dojo/_base/declare',
-                'dstore/Rest',
-                'dstore/Trackable',
-                'dgrid/OnDemandGrid',
-                'dgrid/Editor'
-        ], function (declare, Rest, Trackable, OnDemandGrid, Editor) {
-            
-                var store = new Rest({
-                target: '/AllType/'
-            });
-
-                // Instantiate grid
-                var grid = new (declare([OnDemandGrid, Editor]))({
-                        collection: store,
-                            selectionMode: "single",
-                        columns: {
-                                text: {
-                                        label: 'Строка',
-                                    editor: 'text',
-                                    editOn: 'click',
-                                    autoSave: true
-                                },
-                                date: {
-                                        label: 'Дата'
-                                }
-                        }
-                }, 'AllType');
-
-                grid.startup();
+                'res/AllTypeGrid'
+        ], function (AllTypeGrid) {
+                AllTypeGrid.startup();
         });
     </script>
 DOJO_GRID
         );    
         
-        $next($request, $response);
-        return $response;        
+        if ($next) {
+            return $next($request, $response);
+        }
+        return $response;     
     }
 }

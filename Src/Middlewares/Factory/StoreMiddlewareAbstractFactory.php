@@ -8,10 +8,13 @@
 
 namespace zaboy\middleware\Middlewares\Factory;
 
-use zaboy\middleware\Middlewares\StoreMiddlewareAbstractFactoryAbstract;
+//use Zend\ServiceManager\Factory\AbstractFactoryInterface; 
+//uncomment it ^^ for Zend\ServiceManager V3
+use Zend\ServiceManager\AbstractFactoryInterface; 
+//comment it ^^ for Zend\ServiceManager V3
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stratigility\MiddlewareInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Send DataStores data as HTML
@@ -20,8 +23,21 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
  * @category   DataStores
  * @package    DataStores
  */
-class StoreMiddlewareAbstractFactory extends  StoreMiddlewareAbstractFactoryAbstract   implements AbstractFactoryInterface
+class StoreMiddlewareAbstractFactory  implements AbstractFactoryInterface
 {
+    /**
+     * Can the factory create an instance for the service?
+     *
+     * @param  Interop\Container\ContainerInterface $container
+     * @param  string $requestedName
+     * @return bool
+     */
+    public function canCreate(ContainerInterface $container, $requestedName) 
+    {
+        $config = $container->get('config');
+        return isset ($config['storeMiddleware'][$requestedName]['class']);
+    }
+    
     /**
      * Create and return an instance of the Middleware.
      *
@@ -49,4 +65,29 @@ class StoreMiddlewareAbstractFactory extends  StoreMiddlewareAbstractFactoryAbst
         return new $requestedClassName($dataStore);
     }    
 
+    /**
+     * Determine if we can create a service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param $name
+     * @param $requestedName 
+     * @return bool
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        return $this->canCreate($serviceLocator, $requestedName);
+    }
+
+    /**
+     * Create service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param $name
+     * @param $requestedName
+     * @return mixed
+     */
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        return $this->__invoke($serviceLocator, $requestedName);
+    }
 }    

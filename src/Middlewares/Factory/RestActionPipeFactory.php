@@ -51,10 +51,10 @@ class RestActionPipeFactory  implements FactoryInterface
             $dbMetadata = new Zend\Db\Metadata\Metadata($db);
             $tableNames = $dbMetadata->getTableNames();
             if (isset($tableNames[$resourceName])) {
-            $tableGateway = new TableGateway($resourceName, $db);
-            $dataStore =  new DbTable($tableGateway);
-            $storeMiddleware = new DefaultDataProvider($dataStore); 
-            return new Rest\RestActionPipe($rqlParser, $storeMiddleware, $responseEncoder/**, $errorHandler = null*/);
+                $tableGateway = new TableGateway($resourceName, $db);
+                $dataStore =  new DbTable($tableGateway);
+                $storeMiddleware = new StoreMiddleware($dataStore); 
+                return new Rest\RestActionPipe($rqlParser, $storeMiddleware, $responseEncoder/**, $errorHandler = null*/);
             }    
         }    
         throw new DataStoresException(

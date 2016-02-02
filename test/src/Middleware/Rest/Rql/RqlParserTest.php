@@ -124,7 +124,6 @@ class RqlParserTest extends \PHPUnit_Framework_TestCase {
                     ->getOffset()
                 ,
                 2
-                 
         );    
     }
 

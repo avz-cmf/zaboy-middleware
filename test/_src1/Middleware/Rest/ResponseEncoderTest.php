@@ -52,7 +52,7 @@ class ResponseEncoderTest extends \PHPUnit_Framework_TestCase {
         
     }
 
-    public function test__invoke() {
+    public function testResponseEncoder__invoke() {
         $rowset = [1=>'a', 2=>'b'];
         $request = $this->request->withAttribute('Response-Body', $rowset);
         $contentRangeHeader = 'items 0-0/1';
